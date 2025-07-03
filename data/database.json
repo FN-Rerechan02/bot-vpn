@@ -1,0 +1,20 @@
+{
+  "users": [],
+  "global_settings": {
+    "admin_fees": {
+      "transfer_saldo": 1000
+    },
+    "default_vpn_prices": {
+      "ssh": { "daily": 5000 },
+      "openvpn": { "daily": 7500 },
+      "vmess": { "daily": 8000 },
+      "vless": { "daily": 8500 },
+      "trojan": { "daily": 9000 },
+      "shadowsocks": { "daily": 6000 },
+      "wireguard": { "daily": 10000 },
+      "warp_wireguard": { "daily": 7000 },
+      "udp_zivpn": { "daily": 5500 }
+    },
+    "main_menu_banner": "<b>━━ Welcome to Your VPN Panel ━━</b>\n\nHello there! This is your personalized VPN service bot.\n\n_Example usage and features:_\n\n1.  <b>Trojan</b>: WS + HTTPUPGRADE + GRPC\n2.  <b>VLess</b>: WS + HTTPUPGRADE + GRPC\n3.  <b>VMess</b>: WS + HTTPUPGRADE + GRPC\n\nLimit Device : <i>2 Smartphone</i> or <i>1 STB</i>\nLimit Quota : 1TB/Bulan (Reset Otomatis per akun dibuat)\nLimit IP : 3 IP Dalam 1 Akun\n\n<a href=\"https://telegra.ph/Cara-melakukan-deposit-dan-membeli-akun-di-panel-BOT-LingVPN-06-25\">Cara Deposit dan membeli akun di BOT</a>\n<a href=\"https://telegra.ph/Fitur-VPN-06-22\">Fitur</a>\n<a href=\"https://telegra.ph/Terms-Of-Service-LingVPN-06-21\">Syarat Ketentuan</a>\nUptime Site : <a href=\"https://uptime.lingvpn.id\">https://uptime.lingvpn.id</a>\nContact Account : @EkoLing\n\n<i>by @LingVPN - wysya</i>"
+  }
+}
