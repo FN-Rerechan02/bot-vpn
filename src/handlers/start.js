@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const { sendFormattedMessage } = require('../utils/telegramHelpers');
 const menuHandler = require('./menu'); // Import menu handler to redirect
+const logger = require('../utils/logger'); // Import logger
 
 async function handleStart(ctx) {
     const userId = ctx.from.id;
@@ -10,25 +11,30 @@ async function handleStart(ctx) {
     let user = await db.getUser(userId);
 
     if (!user) {
-        // New user
+        // User not found: Register new user
         user = {
             id: userId,
             username: username || '',
             first_name: firstName || '',
-            role: 'user', // Default role
+            role: 'user', // Default role for new users
             balance: 0,
             vpn_accounts: [],
             autoscripts: []
         };
-        await db.addUser(user);
-        await sendFormattedMessage(ctx, `Halo <b>${firstName || username}</b>, selamat datang di bot kami!`);
-    } else {
-        // Existing user, just update username/firstname if changed
-        const updated = await db.updateUser(userId, { username: username || '', first_name: firstName || '' });
-        if (updated) {
-            // Can add a log here if needed
+        const added = await db.addUser(user);
+        if (added) {
+            logger.info(`New user registered: ${userId} (${firstName || username})`);
+            await sendFormattedMessage(ctx, `Halo <b>${firstName || username}</b>, selamat datang di bot kami!`);
+        } else {
+            // Should theoretically not happen if getUser() returned null, but as a safeguard
+            logger.error(`Failed to add new user ${userId} despite not finding them.`);
+            await sendFormattedMessage(ctx, 'Maaf, terjadi masalah saat pendaftaran Anda. Silakan coba lagi.');
+            return;
         }
-        await sendFormattedMessage(ctx, `Halo kembali, <b>${firstName || username}</b>!`);
+    } else {
+        // User already exists: Just update their info and log
+        await db.updateUser(userId, { username: username || '', first_name: firstName || '' });
+        logger.info(`Existing user logged in: ${userId} (${firstName || username})`);
     }
 
     // Always redirect to the main menu after /start
