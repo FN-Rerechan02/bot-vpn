@@ -58,7 +58,23 @@ async function writeServerDatabase(serverId, data) {
     }
 }
 
+// NEW FUNCTION
+async function getAllServerIds() {
+    try {
+        await fs.mkdir(SERVERS_DIR, { recursive: true }); // Ensure directory exists
+        const files = await fs.readdir(SERVERS_DIR);
+        return files
+            .filter(file => file.endsWith('.json'))
+            .map(file => file.replace('.json', ''));
+    } catch (error) {
+        logger.error('Error getting all server IDs:', error);
+        return [];
+    }
+}
+
+
 module.exports = {
     readServerDatabase,
-    writeServerDatabase
+    writeServerDatabase,
+    getAllServerIds // Export new function
 };
