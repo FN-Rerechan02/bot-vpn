@@ -2,7 +2,7 @@ const config = require('../config');
 const menuHandler = require('./menu');
 const adminCommands = require('./adminCommands');
 const logger = require('../utils/logger');
-const { editFormattedMessage, readMenuFile } = require('../utils/telegramHelpers'); // Added readMenuFile
+const { editFormattedMessage, readMenuFile } = require('../utils/telegramHelpers');
 
 async function handle(ctx) {
     const callbackData = ctx.callbackQuery.data;
@@ -36,7 +36,10 @@ async function handle(ctx) {
                 break;
         }
     } else if (callbackData.startsWith(`${config.CB_PREFIX.ADMIN}:`)) {
-        const action = callbackData.split(':')[1];
+        const parts = callbackData.split(':');
+        const action = parts[1];
+        const param = parts[2]; // e.g., serverId or bannerKey
+
         switch (action) {
             case 'panel':
                 await adminCommands.handleAdminPanel(ctx); // Re-display admin panel
@@ -50,6 +53,9 @@ async function handle(ctx) {
             case 'manage_servers':
                 await adminCommands.handleManageServers(ctx);
                 break;
+            case 'edit_server': // New action for specific server editing
+                await adminCommands.handleEditServerTrigger(ctx, param);
+                break;
             case 'change_role':
                 await adminCommands.handleChangeUserRole(ctx);
                 break;
@@ -62,8 +68,11 @@ async function handle(ctx) {
             case 'change_admin_fee':
                 await adminCommands.handleChangeAdminFee(ctx);
                 break;
-            case 'edit_banner':
-                await adminCommands.handleEditBanner(ctx); // Trigger scene
+            case 'edit_banner_select': // New action to show banner selection menu
+                await adminCommands.handleMenuBanners(ctx);
+                break;
+            case 'edit_banner': // New action to trigger specific banner editing scene
+                await adminCommands.handleEditBannerTrigger(ctx, param);
                 break;
             default:
                 await ctx.answerCbQuery('Aksi admin tidak dikenali!');
